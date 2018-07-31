@@ -6,5 +6,6 @@ using CatSharp.Services.Dtos;
 namespace CatSharp.Services{
     public interface ICatService{
         IList<CatDto> GetAll();
+        void Save(CatDto cat);
     }
 }

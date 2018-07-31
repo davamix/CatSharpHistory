@@ -12,5 +12,16 @@ namespace CatSharp.Services.Extensions
         {
             return new CatDto(cat.CatId, cat.Name, cat.BirthDate, cat.Weights.ToDictionary(x => x.Date, x => x.Grams));
         }
+
+        public static Cat ToEntity(this CatDto cat)
+        {
+            return new Cat
+            {
+                CatId = cat.Id,
+                Name = cat.Name,
+                BirthDate = cat.BirthDate,
+                Weights = cat.Weights.Select(x => new Weight { Date = x.Key, Grams = x.Value }).ToList()
+            };
+        }
     }
 }

@@ -23,10 +23,21 @@ namespace CatSharp.Services
         {
             return _context.Cats.Include(x => x.Weights).Select<Cat, CatDto>(Map).ToList();
         }
+        
 
-        public CatDto Map(Cat cat)
+        public void Save(CatDto cat)
+        {
+            _context.Cats.Add(Map(cat));
+            _context.SaveChanges();
+        }
+
+        private CatDto Map(Cat cat)
         {
             return cat.ToDto();
+        }
+
+        private Cat Map(CatDto cat){
+            return cat.ToEntity();
         }
     }
 }
