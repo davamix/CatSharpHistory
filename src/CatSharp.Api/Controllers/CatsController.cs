@@ -24,8 +24,10 @@ namespace CatSharp.Api.Controllers
 
         // GET api/cats
         [HttpGet]
-        public ActionResult<IEnumerable<CatDto>> Get()
+        public ActionResult<IEnumerable<CatGetDto>> Get()
         {
+            // TODO: Return a CatResponse
+            
             return Ok(_service.GetAll());
         }
 
@@ -38,20 +40,23 @@ namespace CatSharp.Api.Controllers
 
         // POST api/cats
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post([FromBody] CatCreateDto cat)
         {
+            _service.Create(cat);
         }
 
         // PUT api/cats/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public void Put([FromBody] CatUpdateDto cat)
         {
+            _service.Update(cat);
         }
 
         // DELETE api/cats/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            _service.Delete(id);
         }
     }
 }

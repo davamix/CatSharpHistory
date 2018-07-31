@@ -5,7 +5,10 @@ using CatSharp.Services.Dtos;
 
 namespace CatSharp.Services{
     public interface ICatService{
-        IList<CatDto> GetAll();
-        void Save(CatDto cat);
+        IList<CatGetDto> GetAll();
+        void Create(CatCreateDto cat);
+        void Update(CatUpdateDto cat);
+        void Delete(int catId);
+        // void Save(CatDto cat);
     }
 }

@@ -8,12 +8,22 @@ namespace CatSharp.Services.Extensions
 {
     public static class CatExtensions
     {
-        public static CatDto ToDto(this Cat cat)
+        public static CatGetDto ToDto(this Cat cat)
         {
-            return new CatDto(cat.CatId, cat.Name, cat.BirthDate, cat.Weights.ToDictionary(x => x.Date, x => x.Grams));
+            return new CatGetDto(cat.CatId, cat.Name, cat.BirthDate, cat.Weights?.ToDictionary(x => x.Date, x => x.Grams));
         }
 
-        public static Cat ToEntity(this CatDto cat)
+        public static Cat ToEntity(this CatCreateDto cat)
+        {
+            return new Cat
+            {
+                Name = cat.Name,
+                BirthDate = cat.BirthDate,
+                Weights = cat.Weights.Select(x => new Weight { Date = x.Key, Grams = x.Value }).ToList()
+            };
+        }
+
+        public static Cat ToEntity(this CatUpdateDto cat)
         {
             return new Cat
             {

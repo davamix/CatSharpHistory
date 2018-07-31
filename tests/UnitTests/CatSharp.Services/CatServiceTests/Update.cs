@@ -4,16 +4,18 @@ using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 
-using CatSharp.Data;
 using CatSharp.Services;
+using CatSharp.Services.Extensions;
+using CatSharp.Data;
+using CatSharp.Data.Entities;
 using CatSharp.Services.Dtos;
 
 namespace UnitTests.CatSharp.Services.CatServiceTests
 {
-    public class Save
+    public class Update
     {
         [Fact]
-        public void Save_writes_to_database()
+        public void Return_all_cats()
         {
             var connection = new SqliteConnection("DataSource=:memory:");
             connection.Open();
@@ -28,18 +30,32 @@ namespace UnitTests.CatSharp.Services.CatServiceTests
                     context.Database.EnsureCreated();
                 }
 
-                // Run the test
+                // Insert seed data
                 using (var context = new CatSharpContext(options))
                 {
+                    context.Cats.Add(new Cat() { Name = "Cat 1" });
+                    context.SaveChanges();
+                }
+
+                // Run test
+                using (var context = new CatSharpContext(options))
+                {
+                    // Get the cat created
+                    var cat = context.Cats.AsNoTracking().Single(x => x.Name.Equals("Cat 1"));
+                    // Simulate the return value as CatGetDto
+                    var oldDto = cat.ToDto();
+                    // Create the new CatUpdateDto with the date to be updated
+                    var newDto = new CatUpdateDto(oldDto.Id, "Cat B", oldDto.BirthDate, oldDto.Weights);
+                    // Update
                     var service = new CatService(context);
-                    service.Save(new CatDto(1, "Cat 1", new DateTime(2018, 01, 01), null));
+                    service.Update(newDto);
                 }
 
                 // Verify data
                 using (var context = new CatSharpContext(options))
                 {
-                    Assert.Equal(1, context.Cats.Count());
-                    Assert.Equal("Cat 1", context.Cats.Single().Name);
+                    Assert.True(context.Cats.Any(x => x.Name.Equals("Cat B")));
+                    Assert.False(context.Cats.Any(x => x.Name.Equals("Cat 1")));
                 }
             }
             finally

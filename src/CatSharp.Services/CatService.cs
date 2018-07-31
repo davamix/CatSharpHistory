@@ -17,26 +17,44 @@ namespace CatSharp.Services
         public CatService(CatSharpContext context)
         {
             _context = context;
+            _context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
-        
-        public IList<CatDto> GetAll()
-        {
-            return _context.Cats.Include(x => x.Weights).Select<Cat, CatDto>(Map).ToList();
-        }
-        
 
-        public void Save(CatDto cat)
+        public IList<CatGetDto> GetAll()
         {
-            _context.Cats.Add(Map(cat));
+            return _context.Cats.Include(x => x.Weights).Select<Cat, CatGetDto>(Map).ToList();
+        }
+
+        public void Create(CatCreateDto cat)
+        {
+            _context.Add(Map(cat));
             _context.SaveChanges();
         }
 
-        private CatDto Map(Cat cat)
+        public void Update(CatUpdateDto cat)
+        {
+            _context.Update(Map(cat));
+            _context.SaveChanges();
+        }
+
+        public void Delete(int catId)
+        {
+            _context.Cats.Remove(new Cat { CatId = catId });
+            _context.SaveChanges();
+        }
+
+        private CatGetDto Map(Cat cat)
         {
             return cat.ToDto();
         }
 
-        private Cat Map(CatDto cat){
+        private Cat Map(CatCreateDto cat)
+        {
+            return cat.ToEntity();
+        }
+
+        private Cat Map(CatUpdateDto cat)
+        {
             return cat.ToEntity();
         }
     }

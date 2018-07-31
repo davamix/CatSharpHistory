@@ -1,15 +1,16 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
 
-namespace CatSharp.Services.Dtos{
-    public class CatDto{
+namespace CatSharp.Services.Dtos
+{
+    public class CatGetDto
+    {
         public int Id{get;}
-        public string Name{get;}
-        public DateTime BirthDate{get;}
-        public Dictionary<DateTime, int> Weights{get;}
+        public string Name { get; }
+        public DateTime BirthDate { get; }
+        public Dictionary<DateTime, int> Weights { get; }
 
-        public CatDto(int id, string name, DateTime birthDate, Dictionary<DateTime,int> weights)
+        public CatGetDto(int id, string name, DateTime birthDate, Dictionary<DateTime, int> weights)
         {
             Id = id;
             Name = name;
