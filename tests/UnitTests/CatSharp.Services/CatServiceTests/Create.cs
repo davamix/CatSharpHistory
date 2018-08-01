@@ -15,10 +15,10 @@ namespace UnitTests.CatSharp.Services.CatServiceTests
         [Fact]
         public void Create_a_new_cat()
         {
-            base.Start().Execute().Verify().End();
+            base.Start().Execute(Execute).Verify(Verify).End();
         }
 
-        public override IServiceTest Execute()
+        private IServiceTest Execute()
         {
             using (var context = new CatSharpContext(base.Options))
             {
@@ -29,7 +29,7 @@ namespace UnitTests.CatSharp.Services.CatServiceTests
             return this;
         }
 
-        public override IServiceTest Verify()
+        private IServiceTest Verify()
         {
             using (var context = new CatSharpContext(base.Options))
             {

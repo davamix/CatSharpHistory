@@ -17,10 +17,10 @@ namespace UnitTests.CatSharp.Services.CatServiceTests
         [Fact]
         public void Update_cat_name()
         {
-            base.Start().SeedData().Execute().Verify().End();
+            base.Start().SeedData(SeedData).Execute(Execute).Verify(Verify).End();
         }
 
-        public override IServiceTest SeedData()
+        private IServiceTest SeedData()
         {
             using (var context = new CatSharpContext(base.Options))
             {
@@ -31,7 +31,7 @@ namespace UnitTests.CatSharp.Services.CatServiceTests
             return this;
         }
 
-        public override IServiceTest Execute()
+        private IServiceTest Execute()
         {
             using (var context = new CatSharpContext(base.Options))
             {
@@ -49,7 +49,7 @@ namespace UnitTests.CatSharp.Services.CatServiceTests
             return this;
         }
 
-        public override IServiceTest Verify()
+        private IServiceTest Verify()
         {
             using (var context = new CatSharpContext(base.Options))
             {

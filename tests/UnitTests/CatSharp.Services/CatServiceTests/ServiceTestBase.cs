@@ -12,9 +12,9 @@ namespace UnitTests.CatSharp.Services.CatServiceTests
     public interface IServiceTest
     {
         IServiceTest Start();
-        IServiceTest SeedData();
-        IServiceTest Execute();
-        IServiceTest Verify();
+        IServiceTest SeedData(Func<IServiceTest> function);
+        IServiceTest Execute(Func<IServiceTest> function);
+        IServiceTest Verify(Func<IServiceTest> function);
         void End();
     }
 
@@ -46,16 +46,19 @@ namespace UnitTests.CatSharp.Services.CatServiceTests
             return this;
         }
 
-        public virtual IServiceTest SeedData()
+        public virtual IServiceTest SeedData(Func<IServiceTest> function)
         {
+            function();
             return this;
         }
-        public virtual IServiceTest Execute()
+        public virtual IServiceTest Execute(Func<IServiceTest> function)
         {
+            function();
             return this;
         }
-        public virtual IServiceTest Verify()
+        public virtual IServiceTest Verify(Func<IServiceTest> function)
         {
+            function();
             return this;
         }
 
