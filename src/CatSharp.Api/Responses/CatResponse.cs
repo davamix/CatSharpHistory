@@ -9,7 +9,7 @@ namespace CatSharp.Api.Responses
     {
         public CatResponse(object o) : base(o)
         {
-            if(o is null){
+            if(!(o is null)){
                 this.Value = o;
                 this.StatusCode = 200;
             }else{

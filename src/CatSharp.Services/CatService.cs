@@ -3,9 +3,10 @@ using System.Linq;
 using System.Collections.Generic;
 
 using CatSharp.Services.Dtos;
+using CatSharp.Services.Dtos.Extensions;
 using CatSharp.Data;
 using CatSharp.Data.Entities;
-using CatSharp.Services.Extensions;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace CatSharp.Services

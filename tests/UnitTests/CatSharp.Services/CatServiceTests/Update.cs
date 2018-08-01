@@ -5,63 +5,59 @@ using Microsoft.EntityFrameworkCore;
 using Xunit;
 
 using CatSharp.Services;
-using CatSharp.Services.Extensions;
+using CatSharp.Services.Dtos.Extensions;
 using CatSharp.Data;
 using CatSharp.Data.Entities;
 using CatSharp.Services.Dtos;
 
 namespace UnitTests.CatSharp.Services.CatServiceTests
 {
-    public class Update
+    public class Update : ServiceTestABase<object>
     {
         [Fact]
-        public void Return_all_cats()
+        public void Update_cat_name()
         {
-            var connection = new SqliteConnection("DataSource=:memory:");
-            connection.Open();
+            base.Start().SeedData().Execute().Verify().End();
+        }
 
-            try
+        public override IServiceTest SeedData()
+        {
+            using (var context = new CatSharpContext(base.Options))
             {
-                var options = new DbContextOptionsBuilder<CatSharpContext>().UseSqlite(connection).Options;
-
-                // Create the schema in the database
-                using (var context = new CatSharpContext(options))
-                {
-                    context.Database.EnsureCreated();
-                }
-
-                // Insert seed data
-                using (var context = new CatSharpContext(options))
-                {
-                    context.Cats.Add(new Cat() { Name = "Cat 1" });
-                    context.SaveChanges();
-                }
-
-                // Run test
-                using (var context = new CatSharpContext(options))
-                {
-                    // Get the cat created
-                    var cat = context.Cats.AsNoTracking().Single(x => x.Name.Equals("Cat 1"));
-                    // Simulate the return value as CatGetDto
-                    var oldDto = cat.ToDto();
-                    // Create the new CatUpdateDto with the date to be updated
-                    var newDto = new CatUpdateDto(oldDto.Id, "Cat B", oldDto.BirthDate, oldDto.Weights);
-                    // Update
-                    var service = new CatService(context);
-                    service.Update(newDto);
-                }
-
-                // Verify data
-                using (var context = new CatSharpContext(options))
-                {
-                    Assert.True(context.Cats.Any(x => x.Name.Equals("Cat B")));
-                    Assert.False(context.Cats.Any(x => x.Name.Equals("Cat 1")));
-                }
+                context.Cats.Add(new Cat() { Name = "Cat 1" });
+                context.SaveChanges();
             }
-            finally
+
+            return this;
+        }
+
+        public override IServiceTest Execute()
+        {
+            using (var context = new CatSharpContext(base.Options))
             {
-                connection.Close();
+                // Get the cat created
+                var cat = context.Cats.AsNoTracking().Single(x => x.Name.Equals("Cat 1"));
+                // Simulate the return value as CatGetDto
+                var oldDto = cat.ToDto();
+                // Create the new CatUpdateDto with the date to be updated
+                var newDto = new CatUpdateDto(oldDto.Id, "Cat B", oldDto.BirthDate, oldDto.Weights);
+                // Update
+                var service = new CatService(context);
+                service.Update(newDto);
             }
+
+            return this;
+        }
+
+        public override IServiceTest Verify()
+        {
+            using (var context = new CatSharpContext(base.Options))
+            {
+                Assert.True(context.Cats.Any(x => x.Name.Equals("Cat B")));
+                Assert.False(context.Cats.Any(x => x.Name.Equals("Cat 1")));
+            }
+
+            return this;
         }
     }
 }

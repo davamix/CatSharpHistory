@@ -4,7 +4,7 @@ using CatSharp.Data.Entities;
 using CatSharp.Services.Dtos;
 
 
-namespace CatSharp.Services.Extensions
+namespace CatSharp.Services.Dtos.Extensions
 {
     public static class CatExtensions
     {

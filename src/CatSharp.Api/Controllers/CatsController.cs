@@ -4,6 +4,7 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 
 using CatSharp.Services;
+using CatSharp.Services.Extensions;
 using CatSharp.Services.Dtos;
 /*
  * Check this namespace
@@ -19,7 +20,7 @@ namespace CatSharp.Api.Controllers
 
         public CatsController(ICatService service)
         {
-            _service = service;
+            _service = service;   
         }
 
         // GET api/cats
@@ -29,6 +30,8 @@ namespace CatSharp.Api.Controllers
             // TODO: Return a CatResponse
             
             return Ok(_service.GetAll());
+
+            //(service as CatService).GetAllExt()
         }
 
         // GET api/cats/5
