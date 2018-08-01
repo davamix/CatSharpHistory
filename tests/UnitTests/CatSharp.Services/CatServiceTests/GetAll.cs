@@ -13,7 +13,7 @@ using CatSharp.Data.Entities;
 
 namespace UnitTests.CatSharp.Services.CatServiceTests
 {
-    public class GetAll : ServiceTestABase<IList<CatGetDto>>
+    public class GetAll : ServiceTestBase<IList<CatGetDto>>
     {
         [Fact]
         public void Return_all_cats()

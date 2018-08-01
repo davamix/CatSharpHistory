@@ -23,7 +23,7 @@ namespace UnitTests.CatSharp.Services.CatServiceTests
         TResult Result { get; set; }
     }
 
-    public abstract class ServiceTestABase<TResult> : IServiceTest<TResult>
+    public abstract class ServiceTestBase<TResult> : IServiceTest<TResult>
     {
         public TResult Result { get; set; }
 

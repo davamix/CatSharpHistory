@@ -12,7 +12,7 @@ using CatSharp.Services.Dtos;
 
 namespace UnitTests.CatSharp.Services.CatServiceTests
 {
-    public class Update : ServiceTestABase<object>
+    public class Update : ServiceTestBase<object>
     {
         [Fact]
         public void Update_cat_name()

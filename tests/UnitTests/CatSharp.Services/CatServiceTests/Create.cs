@@ -10,7 +10,7 @@ using CatSharp.Services.Dtos;
 
 namespace UnitTests.CatSharp.Services.CatServiceTests
 {
-    public class Create : ServiceTestABase<object>
+    public class Create : ServiceTestBase<object>
     {
         [Fact]
         public void Create_a_new_cat()
